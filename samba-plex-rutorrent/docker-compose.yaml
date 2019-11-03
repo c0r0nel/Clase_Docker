@@ -1,0 +1,46 @@
+version: "2"
+
+services:
+
+  samba:
+    image: dperson/samba
+    restart: always
+    command: '-n -s "warez;/warez;yes;no;yes"'
+    stdin_open: true
+    tty: true
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139/tcp"
+      - "445:445/tcp"
+    volumes:
+      - /usr/share/zoneinfo/America/Argentina/Mendoza:/etc/localtime
+      - /warez:/warez
+
+  rtorrent:
+    image: linuxserver/rutorrent
+    ports:
+      - 8080:80
+      - 51413:51413
+      - 6881:6881/udp
+    volumes:
+      - /docker-configs/rutorrent:/config
+      - /warez:/warez
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    ports:
+      - 32400:32400
+      - 33400:33400
+    volumes:
+      - /docker-configs/plex:/config
+      - /warez/movies:/data/movies
+    restart: always
+    network_mode: "host"
