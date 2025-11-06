@@ -15,7 +15,7 @@ services:
       - "445:445/tcp"
     volumes:
       - /usr/share/zoneinfo/America/Argentina/Mendoza:/etc/localtime
-      - /warez:/warez
+      - /Users/coronel/warez:/warez
 
   rtorrent:
     image: linuxserver/rutorrent
@@ -24,8 +24,8 @@ services:
       - 51413:51413
       - 6881:6881/udp
     volumes:
-      - /docker-configs/rutorrent:/config
-      - /warez:/warez
+      - /Users/coronel/docker-configs/rutorrent:/config
+      - /Users/coronel/warez:/warez
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: always
 
@@ -40,7 +40,6 @@ services:
       - 32400:32400
       - 33400:33400
     volumes:
-      - /docker-configs/plex:/config
-      - /warez/movies:/data/movies
+      - /Users/coronel/docker-configs/plex:/config
+      - /Users/coronel/warez/movies:/data/movies
     restart: always
-    network_mode: "host"
